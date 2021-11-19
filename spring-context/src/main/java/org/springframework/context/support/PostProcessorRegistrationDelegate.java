@@ -104,7 +104,7 @@ final class PostProcessorRegistrationDelegate {
 			//合并
 			registryProcessors.addAll(currentRegistryProcessors);
 
-			// 这里比较总要
+			// 这里比较重要
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
