@@ -254,6 +254,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
+		// todo 初始化的时候已经做了一次，为啥还要做一次， ？？ 感觉有些多余
+		//好像是在处理 doScan(basePackages)后 拥有@order 注解 以及具有ContextAnnotationAutowireCandidateResolver 提供延时加载功能的类
 		if (this.includeAnnotationConfig) {
 			AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 		}

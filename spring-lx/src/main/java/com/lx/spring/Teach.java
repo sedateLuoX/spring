@@ -8,7 +8,7 @@ public class Teach {
 
 
 		// 添加文件注释
-		AnnotationConfigApplicationContext  context = new AnnotationConfigApplicationContext(AppConfig.class);
+		AnnotationConfigApplicationContext  context = new AnnotationConfigApplicationContext("com.lx");
 
 	}
 }
