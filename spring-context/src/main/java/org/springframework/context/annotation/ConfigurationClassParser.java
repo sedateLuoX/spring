@@ -222,7 +222,7 @@ class ConfigurationClassParser {
 			return;
 		}
 
-		//处理Import 的情况
+		//处理 类中是不是有 Import 的情况
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
@@ -306,6 +306,7 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @Import annotations
+		//处理包含@import中的信息
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations

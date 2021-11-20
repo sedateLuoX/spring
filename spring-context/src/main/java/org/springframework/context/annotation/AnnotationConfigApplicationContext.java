@@ -66,7 +66,8 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 		// 会默认直接初始化父类中的 默认构造 方法
 
-		//读取类的信息，放在beanDefinitionMap 中 ， 读取注解的
+		// 初始化一些类 放在beanDefinitionMap 中 例如ConfigurationClassPostProcessor
+		//AutowiredAnnotationBeanPostProcessor等
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
 		//

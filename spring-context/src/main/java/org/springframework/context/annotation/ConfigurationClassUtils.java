@@ -132,7 +132,7 @@ abstract class ConfigurationClassUtils {
 //		Component.class
 //		ComponentScan.class
 // 		Import.class
-//		ImportResource.class.getName());
+//		ImportResource.class
 		else if (config != null || isConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}

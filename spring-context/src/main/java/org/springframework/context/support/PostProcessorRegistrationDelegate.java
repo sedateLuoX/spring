@@ -58,11 +58,14 @@ final class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
 
+		//
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
-			//这里面放的是开发人员自己定义的实现了 BeanFactoryPostProcessor 接口的类
+			//这里面放的是开发人员自己定义的实现了BeanFactoryPostProcessor 接口的类
+			// 并手动添加到工厂中 beanFactoryPostProcessors
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
 			//这里面放的是开发人员自己定义的实现了 BeanDefinitionRegistryPostProcessor 接口的类
+			//并手动添加到工厂中 beanFactoryPostProcessors
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
