@@ -224,8 +224,8 @@ class ConfigurationClassParser {
 			return;
 		}
 
-		//处理 当前要 执行的configClass 是不是被别的类 Import 了
-		//被别的类  Import则可能重复
+		//处理 当前要 执行的configClass 是不是被别的类Import 了
+		//被别的类 Import则可能重复
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
@@ -250,6 +250,7 @@ class ConfigurationClassParser {
 		}
 		while (sourceClass != null);
 
+		//
 		this.configurationClasses.put(configClass, configClass);
 	}
 
@@ -586,6 +587,7 @@ class ConfigurationClassParser {
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}
+					//判断是不是 有 ImportBeanDefinitionRegistrar
 					else if (candidate.isAssignable(ImportBeanDefinitionRegistrar.class)) {
 						// Candidate class is an ImportBeanDefinitionRegistrar ->
 						// delegate to it to register additional bean definitions
@@ -595,6 +597,7 @@ class ConfigurationClassParser {
 										this.environment, this.resourceLoader, this.registry);
 						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
 					}
+					// 如果都不是这对这个Bean 进行解析并注入到我们的BD MAP中
 					else {
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class

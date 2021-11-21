@@ -137,6 +137,7 @@ class ConfigurationClassBeanDefinitionReader {
 			return;
 		}
 
+		//如果一个类是@improt 会在这里完成注册
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
@@ -144,7 +145,9 @@ class ConfigurationClassBeanDefinitionReader {
 			loadBeanDefinitionsForBeanMethod(beanMethod);
 		}
 
+		//处理引入的Xml
 		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
+		//注册ImportBeanDefinitionRegistrar 的类
 		loadBeanDefinitionsFromRegistrars(configClass.getImportBeanDefinitionRegistrars());
 	}
 

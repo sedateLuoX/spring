@@ -107,11 +107,12 @@ final class PostProcessorRegistrationDelegate {
 			//合并
 			registryProcessors.addAll(currentRegistryProcessors);
 
-			// 这里比较重要
+			// 这里比较重要 这里执行完毕之后 ，就已经实现了所有的BeanDefinition 的注册
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
+			//排除已经执行了的， 如果还有剩下的，就在执行一变未执行的
 			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (!processedBeans.contains(ppName) && beanFactory.isTypeMatch(ppName, Ordered.class)) {
@@ -143,6 +144,8 @@ final class PostProcessorRegistrationDelegate {
 			}
 
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
+			//前面执行的是 BeanDefinitionRegistryPostProcessor 子类里面扩展的方法，
+			// 接下来这里执行的是beanFactoryPostProcessors 子类里面的方法
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}

@@ -118,8 +118,12 @@ class ConfigurationClassEnhancer {
 	 * Creates a new CGLIB {@link Enhancer} instance.
 	 */
 	private Enhancer newEnhancer(Class<?> configSuperClass, @Nullable ClassLoader classLoader) {
+
 		Enhancer enhancer = new Enhancer();
+		//增强父类
 		enhancer.setSuperclass(configSuperClass);
+		//增强接口 why？
+		// 方便判断一个 一个类已经被增强了
 		enhancer.setInterfaces(new Class<?>[] {EnhancedConfiguration.class});
 		enhancer.setUseFactory(false);
 		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
