@@ -566,17 +566,23 @@ class ConfigurationClassParser {
 			this.importStack.push(configClass);
 			try {
 				for (SourceClass candidate : importCandidates) {
+
+					//反射获取一个实例
 					if (candidate.isAssignable(ImportSelector.class)) {
 						// Candidate class is an ImportSelector -> delegate to it to determine imports
+						//先获取包含了ImportSelector 实现类
 						Class<?> candidateClass = candidate.loadClass();
+						//反射将这个类实例化 然后执行他的实现方法， 得到传如的 字符串
 						ImportSelector selector = ParserStrategyUtils.instantiateClass(candidateClass, ImportSelector.class,
 								this.environment, this.resourceLoader, this.registry);
 						if (selector instanceof DeferredImportSelector) {
 							this.deferredImportSelectorHandler.handle(configClass, (DeferredImportSelector) selector);
 						}
 						else {
+							//执行里面的 方法获取字符串
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames);
+							//递归判断还有没有 import 的文件
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}
