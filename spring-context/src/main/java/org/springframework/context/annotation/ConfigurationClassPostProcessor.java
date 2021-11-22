@@ -332,10 +332,13 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
  			parser.parse(candidates);
 			parser.validate();
 
-			//获取  parse 方法中 没有注册的的 @import 的了类
-			// configurationClasses
+			/**
+			 * 获取parse方法中没有注册的的 @import的类以及
+			 * configurationClasses 这个map中放入的bean看这里
+			 * @see ConfigurationClassParser#processConfigurationClass(org.springframework.context.annotation.ConfigurationClass)
+			 */
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());
-			//移除已经
+			//移除已经处理了的类
 			configClasses.removeAll(alreadyParsed);
 
 			// Read the model and create bean definitions based on its content
@@ -344,6 +347,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						registry, this.sourceExtractor, this.resourceLoader, this.environment,
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
+			//再次将加了所有@Configuration的类拿出来
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 

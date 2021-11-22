@@ -15,12 +15,12 @@ public class Teach {
 
 
 		// 添加文件注释
-		//AnnotationConfigApplicationContext  context = new AnnotationConfigApplicationContext(AppConfig.class);
+		AnnotationConfigApplicationContext  context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-		System.out.println("============================");
+/*		System.out.println("============================");
 		ClassPathXmlApplicationContext context1 = new ClassPathXmlApplicationContext("classpath:spring.xml");
 		AppConfig config = (AppConfig) context1.getBean("appConfig");
-		config.getString();
+		config.getString();*/
 //		ConfigurableListableBeanFactory beanFactory = context.getDefaultListableBeanFactory();
 //
 //		context.register(AppConfig.class);

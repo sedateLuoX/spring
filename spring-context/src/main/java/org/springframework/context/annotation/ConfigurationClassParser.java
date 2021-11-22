@@ -250,7 +250,7 @@ class ConfigurationClassParser {
 		}
 		while (sourceClass != null);
 
-		//
+		// 这里会将方法参数进来来的Bean 用一个map 保存起来
 		this.configurationClasses.put(configClass, configClass);
 	}
 
@@ -601,8 +601,12 @@ class ConfigurationClassParser {
 					else {
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class
+						//现在这个类放在一个 imports 的map 中
 						this.importStack.registerImport(
 								currentSourceClass.getMetadata(), candidate.getMetadata().getClassName());
+						/**
+						 * 然后回调放到一个 configurationClasses 的map中
+						 */
 						processConfigurationClass(candidate.asConfigClass(configClass));
 					}
 				}
