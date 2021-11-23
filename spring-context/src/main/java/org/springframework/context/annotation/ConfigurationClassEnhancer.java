@@ -106,6 +106,7 @@ class ConfigurationClassEnhancer {
 			}
 			return configClass;
 		}
+		//创建代理对象
 		Class<?> enhancedClass = createClass(newEnhancer(configClass, classLoader));
 		if (logger.isTraceEnabled()) {
 			logger.trace(String.format("Successfully enhanced %s; enhanced class name is: %s",
@@ -354,6 +355,11 @@ class ConfigurationClassEnhancer {
 				}
 			}
 
+			//判断是需要去new一个对象出来， 还是通过代理去获取一个对象
+			// 具体判断的逻辑是通过 beanMethod 和代理对象的beanMethod 去完成的 ，
+			// 如果两个名字一致则表示是第一次在执行这个方法，这需要去new
+			// 如果不一致 ，则表示代理对象的方法中执行了被代理对象里里面的内部方法， 则可以通过factoryBean去获取这个bean
+			//如果方法名字一致走这个逻辑
 			if (isCurrentlyInvokedFactoryMethod(beanMethod)) {
 				// The factory is calling the bean method in order to instantiate and register the bean
 				// (i.e. via a getBean() call) -> invoke the super implementation of the method to actually
@@ -371,6 +377,7 @@ class ConfigurationClassEnhancer {
 				return cglibMethodProxy.invokeSuper(enhancedConfigInstance, beanMethodArgs);
 			}
 
+			//如果方法名字不一致 则是走这个方法逻辑
 			return resolveBeanReference(beanMethod, beanMethodArgs, beanFactory, beanName);
 		}
 
@@ -381,6 +388,7 @@ class ConfigurationClassEnhancer {
 			// the bean method, direct or indirect. The bean may have already been marked
 			// as 'in creation' in certain autowiring scenarios; if so, temporarily set
 			// the in-creation status to false in order to avoid an exception.
+			//判断这个bean是不是正在被创建
 			boolean alreadyInCreation = beanFactory.isCurrentlyInCreation(beanName);
 			try {
 				if (alreadyInCreation) {
