@@ -1,5 +1,6 @@
 package com.lx.spring;
 
+import com.lx.spring.beanfactoryprocessor.TestBeanFactoryProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,9 +16,14 @@ public class Teach {
 
 
 		// 添加文件注释
-		AnnotationConfigApplicationContext  context = new AnnotationConfigApplicationContext(AppConfig.class);
+		AnnotationConfigApplicationContext  context = new AnnotationConfigApplicationContext();
+		//context.addBeanFactoryPostProcessor( new TestBeanFactoryProcessor());
 
-/*		System.out.println("============================");
+		context.register(AppConfig.class);
+		context.refresh();
+		System.out.println("============================");
+
+/*
 		ClassPathXmlApplicationContext context1 = new ClassPathXmlApplicationContext("classpath:spring.xml");
 		AppConfig config = (AppConfig) context1.getBean("appConfig");
 		config.getString();*/

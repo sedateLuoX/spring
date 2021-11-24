@@ -99,6 +99,7 @@ final class PostProcessorRegistrationDelegate {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 					//通过 name 去获取这个 ConfigurationClassPostProcessor 然后放入 currentRegistryProcessors 这个spring 自己维护的
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
+					//这个里里面放的是 spring 自己的定义的那个 ConfigurationClassPostProcessor
 					processedBeans.add(ppName);
 				}
 			}
@@ -111,8 +112,8 @@ final class PostProcessorRegistrationDelegate {
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
-			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
-			//排除已经执行了的， 如果还有剩下的，就在执行一变未执行的
+			// Next, invoke the BeanDefinitionR gistryPostProcessors that implement Ordered.
+			//这里的拿出来看是不是排序的
 			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (!processedBeans.contains(ppName) && beanFactory.isTypeMatch(ppName, Ordered.class)) {
@@ -126,6 +127,7 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 
 			// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
+			//去拿刚刚扫描出来的不知自己定义的，包扫描下发现的 BeanDefinitionRegistryPostProcessor 并执行
 			boolean reiterate = true;
 			while (reiterate) {
 				reiterate = false;
@@ -134,6 +136,7 @@ final class PostProcessorRegistrationDelegate {
 					if (!processedBeans.contains(ppName)) {
 						currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 						processedBeans.add(ppName);
+						//因为如果有 BeanDefinitionRegistryPostProcessor 的话 ，可能扫描出新的类
 						reiterate = true;
 					}
 				}
@@ -192,7 +195,8 @@ final class PostProcessorRegistrationDelegate {
 		sortPostProcessors(orderedPostProcessors, beanFactory);
 		invokeBeanFactoryPostProcessors(orderedPostProcessors, beanFactory);
 
-		// Finally, invoke all other BeanFactoryPostProcessors.
+		// Finally, invoke all other  BeanFactoryPostProcessors.
+		//这里会将我们自己注入的 BeanFactoryPostProcessor 拿出来并进行执行
 		List<BeanFactoryPostProcessor> nonOrderedPostProcessors = new ArrayList<>(nonOrderedPostProcessorNames.size());
 		for (String postProcessorName : nonOrderedPostProcessorNames) {
 			nonOrderedPostProcessors.add(beanFactory.getBean(postProcessorName, BeanFactoryPostProcessor.class));
